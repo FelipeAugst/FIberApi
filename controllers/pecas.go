@@ -72,10 +72,10 @@ func EditPeca(c *fiber.Ctx) error {
 	if err != nil {
 		c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"Error": err.Error()})
 	}
+	peca.ID = uint(id)
+	if err := r.Update(peca); err != nil {
 
-	if err := r.Update(id, peca); err != nil {
-
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"Error": err})
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"Error": err.Error()})
 
 	}
 	return c.SendStatus(200)
