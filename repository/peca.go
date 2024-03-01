@@ -20,7 +20,7 @@ func NewPecaRepo() (repository[models.Peca], error) {
 	if err != nil {
 		return nil, err
 	}
-	return &peca{db}, nil
+	return &peca{db.Model(&models.Peca{})}, nil
 }
 
 func (p peca) Create(peca models.Peca) error {
@@ -39,20 +39,24 @@ func (p peca) ListAll() ([]models.Peca, error) {
 	return peca, nil
 }
 
-func (p peca) Search(param string) ([]models.Peca, error) {
+func (p peca) List(filter string) ([]models.Peca, error) {
 	db, err := db.Connect()
 	if err != nil {
 		return nil, err
 	}
 	var pecas []models.Peca
-	if err := db.Find(&models.Peca{}, "where codigo like ? or descricao like ?", param, param).Error; err != nil {
+	if err := db.Find(&pecas, "descricao like ?%", filter).Error; err != nil {
 		return nil, err
 	}
 
 	return pecas, nil
 }
 
-func (p peca) Update(pc models.Peca) error {
-	return nil
+func (p peca) Update(ID int, peca models.Peca) error {
+	return p.db.Save(&peca).Where(ID).Error
+}
+
+func (p peca) Delete(ID int) error {
+	return p.db.Delete(ID).Error
 
 }
