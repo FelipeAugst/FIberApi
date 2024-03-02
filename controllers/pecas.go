@@ -3,7 +3,6 @@ package controllers
 import (
 	"api/models"
 	"api/repository"
-	"fmt"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -82,6 +81,28 @@ func EditPeca(c *fiber.Ctx) error {
 }
 
 func DeletePeca(c *fiber.Ctx) error {
-	return c.Send([]byte(fmt.Sprintf("Deletar funcionando! peca: %s", c.Params("desc"))))
+	id, err := c.ParamsInt("id")
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"Error": err.Error()})
+
+	}
+
+	r, err := repository.NewPecaRepo()
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"Error": err.Error()})
+	}
+	var peca models.Peca
+
+	err = c.BodyParser(&peca)
+	if err != nil {
+		c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"Error": err.Error()})
+	}
+	peca.ID = uint(id)
+	if err := r.Delete(peca); err != nil {
+
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"Error": err.Error()})
+
+	}
+	return c.SendStatus(200)
 
 }
