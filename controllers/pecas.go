@@ -12,7 +12,9 @@ func CreatePeca(c *fiber.Ctx) error {
 	if err := c.BodyParser(&peca); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"Error": err.Error()})
 	}
-
+	if !peca.ValidateCod() {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"Error": "Codigo de peca fora do padrao"})
+	}
 	r, err := repository.NewPecaRepo()
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"Error": err.Error()})
@@ -71,6 +73,10 @@ func EditPeca(c *fiber.Ctx) error {
 	if err != nil {
 		c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"Error": err.Error()})
 	}
+	if !peca.ValidateCod() {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"Error": "Codigo de peca fora do padrao"})
+	}
+
 	peca.ID = uint(id)
 	if err := r.Update(peca); err != nil {
 
