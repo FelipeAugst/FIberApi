@@ -1,6 +1,7 @@
 package models
 
 import (
+	"errors"
 	"strings"
 
 	"gorm.io/gorm"
@@ -15,10 +16,26 @@ type Cliente struct {
 	Telefone string `json:"telefone" gorm:"column:telefone;type:text"`
 }
 
-func (c *Cliente) Format() {
+func (c *Cliente) Format() error {
 
 	c.Nome = strings.TrimSpace(c.Nome)
 	c.Endereco = strings.TrimSpace(c.Endereco)
 	c.CPF = strings.TrimSpace(c.CPF)
+	return nil
 
+}
+
+func (c *Cliente) validate() error {
+	switch {
+	case c.CPF == "":
+		{
+			return errors.New("Insira um CPF Valido")
+		}
+	case c.Email == "":
+		{
+			return errors.New("Insira um Email Valido")
+		}
+
+	}
+	return nil
 }
