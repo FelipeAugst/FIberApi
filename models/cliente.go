@@ -29,11 +29,11 @@ func (c *Cliente) validate() error {
 	switch {
 	case c.CPF == "":
 		{
-			return errors.New("Insira um CPF Valido")
+			return errors.New("insira um CPF Valido")
 		}
 	case c.Email == "":
 		{
-			return errors.New("Insira um Email Valido")
+			return errors.New("insira um Email Valido")
 		}
 
 	}
