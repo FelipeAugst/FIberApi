@@ -8,11 +8,8 @@ type repository[T any] interface {
 	Delete(T) error
 }
 
-
-type operation[T any] interface{
-
+type operation[T any] interface {
 	repository[T]
-	SetStatus()error
-	ByField(string)([]T,error)
-
+	SetStatus() error
+	ByField(string) ([]T, error)
 }

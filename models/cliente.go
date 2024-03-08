@@ -16,11 +16,17 @@ type Cliente struct {
 	Telefone string `json:"telefone" gorm:"column:telefone;type:text"`
 }
 
+func (c Cliente) TableName() string {
+	return "cliente"
+}
 func (c *Cliente) Format() error {
 
 	c.Nome = strings.TrimSpace(c.Nome)
 	c.Endereco = strings.TrimSpace(c.Endereco)
 	c.CPF = strings.TrimSpace(c.CPF)
+	if err := c.validate(); err != nil {
+		return err
+	}
 	return nil
 
 }
