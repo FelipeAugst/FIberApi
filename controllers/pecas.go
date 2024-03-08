@@ -98,11 +98,6 @@ func DeletePeca(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"Error": err.Error()})
 	}
 	var peca models.Peca
-
-	err = c.BodyParser(&peca)
-	if err != nil {
-		c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"Error": err.Error()})
-	}
 	peca.ID = uint(id)
 	if err := r.Delete(peca); err != nil {
 

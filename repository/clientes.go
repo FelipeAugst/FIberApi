@@ -45,12 +45,8 @@ func (c *cliente) List(param string) ([]models.Cliente, error) {
 }
 
 func (c *cliente) Update(cliente models.Cliente) error {
-	fields := make(map[string]any)
-	fields["nome"] = cliente.Nome
-	fields["email"] = cliente.Email
-	fields["endereco"] = cliente.Endereco
-	fields["telefone"] = cliente.Telefone
-	return c.db.Where("Cpf=?", cliente.CPF).Updates(cliente).Error
+
+	return c.db.Where("id= ?", cliente.ID).Updates(cliente).Error
 
 }
 

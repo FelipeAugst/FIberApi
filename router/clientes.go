@@ -3,8 +3,6 @@ package router
 import (
 	"api/controllers"
 	"net/http"
-
-	"github.com/gofiber/fiber/v2"
 )
 
 var routeClientes = []Route{
@@ -24,18 +22,14 @@ var routeClientes = []Route{
 		handler: controllers.ListAllClientes,
 	},
 	{
-		path:   "/clientes/:id",
-		method: http.MethodPut,
-		handler: func(*fiber.Ctx) error {
-			return nil
-		},
+		path:    "/clientes/:id",
+		method:  http.MethodPut,
+		handler: controllers.EditCliente,
 	},
 
 	{
-		path:   "/clientes/:id",
-		method: http.MethodDelete,
-		handler: func(*fiber.Ctx) error {
-			return nil
-		},
+		path:    "/clientes/:id",
+		method:  http.MethodDelete,
+		handler: controllers.DeleteCliente,
 	},
 }

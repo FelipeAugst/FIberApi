@@ -50,10 +50,7 @@ func (p *peca) List(filter string) ([]models.Peca, error) {
 }
 
 func (p *peca) Update(peca models.Peca) error {
-	fields := make(map[string]any)
-	fields["cod"] = peca.Cod
-	fields["descricao"] = peca.Descricao
-	fields["preco"] = peca.Preco
+
 	return p.db.Where("id=?", peca.ID).Updates(peca).Error
 }
 
