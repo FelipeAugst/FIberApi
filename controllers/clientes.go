@@ -14,6 +14,10 @@ func CreateCliente(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusUnprocessableEntity).JSON(fiber.Map{"error": err.Error()})
 	}
 
+	
+  if err := cliente.Format(); err != nil{
+	return c.Status(fiber.StatusUnprocessableEntity).JSON(fiber.Map{"error": err.Error()})
+  }
 	r, err := repository.NewClienteRepo()
 	if err != nil {
 		c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
