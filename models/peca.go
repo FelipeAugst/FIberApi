@@ -1,6 +1,8 @@
 package models
 
 import (
+	"regexp"
+	"strings"
 	"time"
 
 	"gorm.io/gorm"
@@ -16,4 +18,15 @@ type Peca struct {
 
 func (p Peca) TableName() string {
 	return "peca"
+}
+
+func (p Peca) ValidateCod() bool {
+	exp, err := regexp.Compile("([0-9][0-9][.][0-9][0-9][.][0-9][0-9][0-9][0-9])")
+	if err != nil {
+		return false
+	}
+	if len(p.Cod) > 10 || len(strings.Split(p.Cod, ".")) > 3 {
+		return false
+	}
+	return exp.Match([]byte(p.Cod))
 }

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"api/db/config"
 	"api/migrations"
 	"api/router"
 	"log"
@@ -15,6 +16,7 @@ func main() {
 		EnablePrintRoutes: true,
 	})
 	router.ConfigRoutes(app)
+	config.LoadEnvVArs()
 	if err := migrations.MigrateTables(); err != nil {
 		log.Fatal(err)
 	}

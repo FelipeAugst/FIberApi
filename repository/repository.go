@@ -7,3 +7,9 @@ type repository[T any] interface {
 	Update(T) error
 	Delete(T) error
 }
+
+type operation[T any] interface {
+	repository[T]
+	SetStatus() error
+	ByField(string) ([]T, error)
+}
