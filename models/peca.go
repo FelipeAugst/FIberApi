@@ -24,7 +24,7 @@ func (p Peca) TableName() string {
 func (p *Peca) Format() error {
 	p.Descricao = strings.TrimSpace(p.Descricao)
 	if !p.ValidateCod() {
-		return errors.New("Codigo invalido")
+		return errors.New("codigo invalido")
 	}
 	return nil
 }
