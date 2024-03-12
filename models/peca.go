@@ -26,7 +26,7 @@ func (p *Peca) Format() error {
 	if !p.ValidateCod() {
 		return errors.New("Codigo invalido")
 	}
-
+	return nil
 }
 
 func (p Peca) ValidateCod() bool {
