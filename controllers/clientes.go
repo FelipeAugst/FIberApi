@@ -15,8 +15,9 @@ func CreateCliente(c *fiber.Ctx) error {
 	}
 
 	if err := cliente.Format(); err != nil {
-		return c.Status(fiber.StatusUnprocessableEntity).JSON(fiber.Map{"error": err.Error()})
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": err.Error()})
 	}
+
 	r, err := repository.NewClienteRepo()
 	if err != nil {
 		c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
@@ -68,6 +69,10 @@ func EditCliente(c *fiber.Ctx) error {
 	var cliente models.Cliente
 	if err := c.BodyParser(&cliente); err != nil {
 		return c.Status(fiber.StatusUnprocessableEntity).JSON(fiber.Map{"error": err.Error()})
+	}
+
+	if err := cliente.Format(); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": err.Error()})
 	}
 	cliente.ID = uint(id)
 

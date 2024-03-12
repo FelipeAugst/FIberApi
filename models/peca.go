@@ -1,6 +1,7 @@
 package models
 
 import (
+	"errors"
 	"regexp"
 	"strings"
 	"time"
@@ -18,6 +19,14 @@ type Peca struct {
 
 func (p Peca) TableName() string {
 	return "peca"
+}
+
+func (p *Peca) Format() error {
+	p.Descricao = strings.TrimSpace(p.Descricao)
+	if !p.ValidateCod() {
+		return errors.New("codigo invalido")
+	}
+	return nil
 }
 
 func (p Peca) ValidateCod() bool {

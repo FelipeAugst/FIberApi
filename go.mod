@@ -3,7 +3,9 @@ module api
 go 1.22.0
 
 require (
+	github.com/badoux/checkmail v1.2.4
 	github.com/gofiber/fiber/v2 v2.52.1
+	github.com/paemuri/brdoc v1.1.2
 	gorm.io/gorm v1.25.7
 )
 
