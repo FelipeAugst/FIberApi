@@ -4,6 +4,8 @@ import (
 	"errors"
 	"strings"
 
+	"github.com/badoux/checkmail"
+	"github.com/paemuri/brdoc"
 	"gorm.io/gorm"
 )
 
@@ -33,15 +35,28 @@ func (c *Cliente) Format() error {
 
 func (c *Cliente) validate() error {
 	switch {
-	case c.CPF == "":
+	case !brdoc.IsCPF(c.CPF):
 		{
 			return errors.New("insira um CPF Valido")
 		}
-	case c.Email == "":
+	case checkmail.ValidateFormat(c.Email) != nil:
 		{
 			return errors.New("insira um Email Valido")
 		}
 
+	case c.Endereco == "":
+		{
+			{
+				return errors.New("insira um Email Valido")
+			}
+		}
+	case c.Telefone == "":
+		{
+			{
+				return errors.New("insira um Email Valido")
+			}
+		}
+	default:
+		return nil
 	}
-	return nil
 }

@@ -8,6 +8,11 @@ require (
 )
 
 require (
+	github.com/badoux/checkmail v1.2.4 // indirect
+	github.com/paemuri/brdoc v1.1.2 // indirect
+)
+
+require (
 	github.com/andybalholm/brotli v1.0.5 // indirect
 	github.com/google/uuid v1.5.0 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
