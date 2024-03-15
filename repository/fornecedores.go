@@ -1,0 +1,56 @@
+package repository
+
+import (
+	"api/db"
+	"api/models"
+
+	"gorm.io/gorm"
+)
+
+type fornecedor struct {
+	db *gorm.DB
+}
+
+func NewFornecedorRepo() (repository[models.Fornecedor], error) {
+	db, err := db.Connect()
+	if err != nil {
+		return nil, err
+	}
+	return &fornecedor{db.Model(&models.Fornecedor{})}, nil
+}
+
+func (f *fornecedor) Create(fornecedor models.Fornecedor) error {
+
+	return f.db.Create(&fornecedor).Error
+
+}
+
+func (f *fornecedor) ListAll() ([]models.Fornecedor, error) {
+
+	var fornecedores []models.Fornecedor
+	if err := f.db.Find(&fornecedores).Error; err != nil {
+		return nil, err
+	}
+
+	return fornecedores, nil
+}
+
+func (f *fornecedor) List(filter string) ([]models.Fornecedor, error) {
+
+	var fornecedores []models.Fornecedor
+	if err := f.db.Where("nome like ?", filter+"%").Find(&fornecedores).Error; err != nil {
+		return nil, err
+	}
+
+	return fornecedores, nil
+}
+
+func (f *fornecedor) Update(fornecedor models.Fornecedor) error {
+
+	return f.db.Where("id=?", fornecedor.ID).Updates(fornecedor).Error
+}
+
+func (f *fornecedor) Delete(fornecedor models.Fornecedor) error {
+	return f.db.Delete(&fornecedor).Error
+
+}
