@@ -3,6 +3,7 @@ package controllers
 import (
 	"api/models"
 	"api/repository"
+	"errors"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -46,14 +47,17 @@ func ListAllClientes(c *fiber.Ctx) error {
 
 func ListClientes(c *fiber.Ctx) error {
 
-	filter := c.Params("filter")
+	param := c.Params("filter")
+	if len(param) < 3 {
+		c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": errors.New("insira ao menos 3 letras na busca").Error()})
+	}
 	var clientes []models.Cliente
 	r, err := repository.NewClienteRepo()
 	if err != nil {
 		c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
 	}
 
-	clientes, err = r.List(filter)
+	clientes, err = r.List(param)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
 	}

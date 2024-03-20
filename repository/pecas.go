@@ -3,7 +3,6 @@ package repository
 import (
 	"api/db"
 	"api/models"
-	"fmt"
 
 	"gorm.io/gorm"
 )
@@ -35,7 +34,7 @@ func (p *peca) ListAll() ([]models.Peca, error) {
 	if err := p.db.Find(&peca).Error; err != nil {
 		return nil, err
 	}
-	fmt.Println(peca)
+
 	return peca, nil
 }
 

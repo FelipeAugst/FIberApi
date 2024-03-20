@@ -1,28 +1,29 @@
 package router
 
 import (
+	"api/controllers"
 	"net/http"
 )
 
 var routeFornecedores = []Route{
 	{path: "/fornecedores",
 		method:  http.MethodGet,
-		handler: nil,
+		handler: controllers.ListAllFornecedores,
 	},
 	{path: "/fornecedores/:filter",
 		method:  http.MethodGet,
-		handler: nil,
+		handler: controllers.ListFornecedores,
 	},
 	{path: "/fornecedores",
 		method:  http.MethodPost,
-		handler: nil,
+		handler: controllers.CreateFornecedor,
 	},
 	{path: "/fornecedores/:id",
 		method:  http.MethodPut,
-		handler: nil,
+		handler: controllers.EditFornecedor,
 	},
 	{path: "/fornecedores/:id",
 		method:  http.MethodDelete,
-		handler: nil,
+		handler: controllers.DeleteForncedor,
 	},
 }

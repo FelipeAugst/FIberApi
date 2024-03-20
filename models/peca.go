@@ -4,17 +4,16 @@ import (
 	"errors"
 	"regexp"
 	"strings"
-	"time"
 
 	"gorm.io/gorm"
 )
 
 type Peca struct {
 	gorm.Model
-	Cod       string    `json:"cod" gorm:"column:cod;type=int"`
-	Descricao string    `json:"descricao" gorm:"column:descricao"`
-	Preco     float64   `json:"preco" gorm:"column:preco"`
-	LeadTime  time.Time `json:"leadtime" gorm:"column:leadtime"`
+	Cod       string  `json:"cod" gorm:"column:cod;type=int"`
+	Descricao string  `json:"descricao" gorm:"column:descricao"`
+	Preco     float64 `json:"preco" gorm:"column:preco"`
+	Custo     float64 `json:"custo" gorm:"column:custo"`
 }
 
 func (p Peca) TableName() string {
@@ -23,19 +22,22 @@ func (p Peca) TableName() string {
 
 func (p *Peca) Format() error {
 	p.Descricao = strings.TrimSpace(p.Descricao)
-	if !p.ValidateCod() {
-		return errors.New("codigo invalido")
+	if err := p.validate(); err != nil {
+		return err
 	}
 	return nil
 }
 
-func (p Peca) ValidateCod() bool {
+func (p Peca) validate() error {
+	if p.Descricao == "" {
+		return errors.New("descricao invalida")
+	}
 	exp, err := regexp.Compile("([0-9][0-9][.][0-9][0-9][.][0-9][0-9][0-9][0-9])")
 	if err != nil {
-		return false
+		return err
 	}
-	if len(p.Cod) > 10 || len(strings.Split(p.Cod, ".")) > 3 {
-		return false
+	if len(p.Cod) > 10 || len(strings.Split(p.Cod, ".")) > 3 || !exp.Match([]byte(p.Cod)) {
+		return errors.New("padrao invalido para o codigo da peca")
 	}
-	return exp.Match([]byte(p.Cod))
+	return nil
 }

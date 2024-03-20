@@ -35,9 +35,11 @@ func (f *Fornecedor) Format() error {
 
 func (f *Fornecedor) validate() error {
 	switch {
+
 	case !brdoc.IsCNPJ(f.Cnpj):
 		{
 			return errors.New("insira um CNPJ Valido")
+
 		}
 	case checkmail.ValidateFormat(f.Email) != nil:
 		{
