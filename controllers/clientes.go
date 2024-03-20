@@ -48,7 +48,7 @@ func ListAllClientes(c *fiber.Ctx) error {
 func ListClientes(c *fiber.Ctx) error {
 
 	param := c.Params("filter")
-	if len(param) <= 3 {
+	if len(param) < 3 {
 		c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": errors.New("insira ao menos 3 letras na busca").Error()})
 	}
 	var clientes []models.Cliente
