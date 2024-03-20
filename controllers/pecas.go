@@ -3,6 +3,7 @@ package controllers
 import (
 	"api/models"
 	"api/repository"
+	"errors"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -44,6 +45,9 @@ func ListAllPecas(c *fiber.Ctx) error {
 
 func ListPecas(c *fiber.Ctx) error {
 	param := c.Params("filter")
+	if len(param) <= 3 {
+		c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": errors.New("insira ao menos 3 letras na busca").Error()})
+	}
 	r, err := repository.NewPecaRepo()
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"Error": err.Error()})
