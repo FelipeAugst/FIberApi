@@ -12,10 +12,10 @@ import (
 type Cliente struct {
 	gorm.Model
 	Nome     string `json:"nome" gorm:"column:nome;type:text"`
-	Endereco string `json:"endereco" gorm:"column:endereco;type:text"`
-	Email    string `json:"email" gorm:"column:email;type:varchar(50)"`
-	CPF      string `json:"cpf" gorm:"column:cpf;type:text"`
-	Telefone string `json:"telefone" gorm:"column:telefone;type:text"`
+	Endereco string `json:"endereco" gorm:"column:endereco;type:text;"`
+	Email    string `json:"email" gorm:"column:email;type:varchar(50);unique;"`
+	CPF      string `json:"cpf" gorm:"column:cpf;type:text;unique;"`
+	Telefone string `json:"telefone" gorm:"column:telefone;type:text;unique;"`
 }
 
 func (c Cliente) TableName() string {
