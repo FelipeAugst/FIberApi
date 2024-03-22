@@ -65,6 +65,29 @@ func ListClientes(c *fiber.Ctx) error {
 
 }
 
+func ByIdCliente(c *fiber.Ctx) error {
+
+	id, err := c.ParamsInt("id")
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"Error": err.Error()})
+
+	}
+
+	r, err := repository.NewClienteRepo()
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"Error": err.Error()})
+	}
+
+	cliente, err := r.ById(uint(id))
+	if err != nil {
+
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"Error": err.Error()})
+
+	}
+	return c.JSON(cliente)
+
+}
+
 func EditCliente(c *fiber.Ctx) error {
 	id, err := c.ParamsInt("id")
 	if err != nil {

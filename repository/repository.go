@@ -6,6 +6,7 @@ type repository[T any] interface {
 	List(param string) ([]T, error)
 	Update(T) error
 	Delete(T) error
+	ById(uint) (T, error)
 }
 
 type operation[T any] interface {

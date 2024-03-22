@@ -25,6 +25,16 @@ func (f *fornecedor) Create(fornecedor models.Fornecedor) error {
 
 }
 
+func (f *fornecedor) ById(id uint) (models.Fornecedor, error) {
+
+	var fornecedor models.Fornecedor
+	if err := f.db.Where("ID = ?", id).Find(&fornecedor).Error; err != nil {
+		return models.Fornecedor{}, err
+	}
+
+	return fornecedor, nil
+}
+
 func (f *fornecedor) ListAll() ([]models.Fornecedor, error) {
 
 	var fornecedores []models.Fornecedor
