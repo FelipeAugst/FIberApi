@@ -63,6 +63,29 @@ func ListFornecedores(c *fiber.Ctx) error {
 	return c.JSON(fornecedores)
 }
 
+func ByIdFornecedor(c *fiber.Ctx) error {
+
+	id, err := c.ParamsInt("id")
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"Error": err.Error()})
+
+	}
+
+	r, err := repository.NewFornecedorRepo()
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"Error": err.Error()})
+	}
+
+	fornecedor, err := r.ById(uint(id))
+	if err != nil {
+
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"Error": err.Error()})
+
+	}
+	return c.JSON(fornecedor)
+
+}
+
 func EditFornecedor(c *fiber.Ctx) error {
 	id, err := c.ParamsInt("id")
 	if err != nil {

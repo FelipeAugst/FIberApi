@@ -36,6 +36,16 @@ func (c *cliente) ListAll() ([]models.Cliente, error) {
 
 }
 
+func (c *cliente) ById(id uint) (models.Cliente, error) {
+
+	var cliente models.Cliente
+	if err := c.db.Where("ID = ?", id).Find(&cliente).Error; err != nil {
+		return models.Cliente{}, err
+	}
+
+	return cliente, nil
+}
+
 func (c *cliente) List(param string) ([]models.Cliente, error) {
 	var cliente []models.Cliente
 	if err := c.db.Where("nome like ?", "%"+param).Find(&cliente).Error; err != nil {

@@ -9,6 +9,7 @@ func ConfigRoutes(app *fiber.App) {
 	routes = append(routes, routePecas...)
 	routes = append(routes, routeClientes...)
 	routes = append(routes, routeFornecedores...)
+	routes = append(routes, routeVendas...)
 
 	for _, route := range routes {
 		app.Add(route.method, route.path, route.handler)

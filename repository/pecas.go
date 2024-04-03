@@ -48,6 +48,16 @@ func (p *peca) List(filter string) ([]models.Peca, error) {
 	return pecas, nil
 }
 
+func (p *peca) ById(id uint) (models.Peca, error) {
+
+	var peca models.Peca
+	if err := p.db.Where("id = ?", id).Find(&peca).Error; err != nil {
+		return models.Peca{}, err
+	}
+
+	return peca, nil
+}
+
 func (p *peca) Update(peca models.Peca) error {
 
 	return p.db.Where("id=?", peca.ID).Updates(peca).Error
