@@ -8,7 +8,7 @@ import (
 
 var routeVendas = []Route{
 	{
-		path:   "/vendas/peca/:peca/:cliente",
+		path:   "/vendas",
 		method: http.MethodGet,
 		handler: func(*fiber.Ctx) error {
 			return nil
