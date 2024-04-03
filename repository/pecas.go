@@ -51,7 +51,7 @@ func (p *peca) List(filter string) ([]models.Peca, error) {
 func (p *peca) ById(id uint) (models.Peca, error) {
 
 	var peca models.Peca
-	if err := p.db.Where("codigo = ?", id).Find(&peca).Error; err != nil {
+	if err := p.db.Where("id = ?", id).Find(&peca).Error; err != nil {
 		return models.Peca{}, err
 	}
 

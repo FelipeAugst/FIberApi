@@ -20,7 +20,7 @@ func NewVendaRepo() (operation[models.Venda], error) {
 }
 
 func (v venda) Create(venda models.Venda) error {
-	return v.db.Create(venda).Error
+	return v.db.Create(&venda).Error
 
 }
 

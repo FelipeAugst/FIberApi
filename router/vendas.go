@@ -1,6 +1,7 @@
 package router
 
 import (
+	"api/controllers"
 	"net/http"
 
 	"github.com/gofiber/fiber/v2"
@@ -15,11 +16,9 @@ var routeVendas = []Route{
 		},
 	},
 	{
-		path:   "/vendas",
-		method: http.MethodPost,
-		handler: func(*fiber.Ctx) error {
-			return nil
-		},
+		path:    "/vendas/:cliente/:peca",
+		method:  http.MethodPost,
+		handler: controllers.CreateVenda,
 	},
 
 	{
