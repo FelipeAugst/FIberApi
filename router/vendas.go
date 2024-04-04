@@ -9,11 +9,9 @@ import (
 
 var routeVendas = []Route{
 	{
-		path:   "/vendas",
-		method: http.MethodGet,
-		handler: func(*fiber.Ctx) error {
-			return nil
-		},
+		path:    "/vendas",
+		method:  http.MethodGet,
+		handler: controllers.ListVendas,
 	},
 	{
 		path:    "/vendas/:cliente/:peca",

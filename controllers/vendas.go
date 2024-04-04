@@ -52,3 +52,19 @@ func CreateVenda(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusCreated).JSON(venda)
 
 }
+
+func ListVendas(ctx *fiber.Ctx) error {
+
+	r, err := repository.NewVendaRepo()
+	if err != nil {
+		return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
+	}
+
+	vendas, err := r.ListAll()
+	if err != nil {
+		return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
+	}
+
+	return ctx.JSON(vendas)
+
+}
