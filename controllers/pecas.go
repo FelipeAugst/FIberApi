@@ -100,7 +100,7 @@ func EditPeca(c *fiber.Ctx) error {
 	if err != nil {
 		c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"Error": err.Error()})
 	}
-	if err := peca.Format(); err != nil {
+	if err := peca.Format(); err != nil && peca.Cod+peca.Descricao != "" {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"Error": err.Error()})
 	}
 
