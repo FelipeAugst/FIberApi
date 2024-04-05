@@ -50,10 +50,8 @@ var routeVendas = []Route{
 	},
 
 	{
-		path:   "/vendas",
-		method: http.MethodDelete,
-		handler: func(*fiber.Ctx) error {
-			return nil
-		},
+		path:    "/vendas",
+		method:  http.MethodDelete,
+		handler: controllers.DeleteVendas,
 	},
 }

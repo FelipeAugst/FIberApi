@@ -20,13 +20,17 @@ func NewVendaRepo() (operation[models.Venda], error) {
 }
 
 func (v venda) Create(venda models.Venda) error {
-	return v.db.Create(&venda).Error
+	venda.Peca.Saldo -= venda.Quantidade
+	if err := v.db.Model(&models.Peca{}).Raw("update peca set saldo=? where id=?", venda.Peca.Saldo, venda.Peca.ID).Error; err != nil {
+		return err
+	}
+	return v.db.Preload("Cliente").Preload("Peca").Create(&venda).Error
 
 }
 
 func (v venda) ListAll() ([]models.Venda, error) {
 	var vendas []models.Venda
-	if err := v.db.Find(&vendas).Error; err != nil {
+	if err := v.db.Model(&models.Venda{}).Preload("Cliente").Preload("Peca").Find(&vendas).Error; err != nil {
 		return nil, err
 	}
 
@@ -38,7 +42,7 @@ func (v venda) ByAgent(ID uint) ([]models.Venda, error) {
 	var cliente models.Cliente
 	cliente.ID = ID
 	var vendas []models.Venda
-	if err := v.db.Where(cliente).Find(&vendas).Error; err != nil {
+	if err := v.db.Preload("Cliente").Preload("Peca").Where("Clliente=?", cliente.ID).Find(&vendas).Error; err != nil {
 		return nil, err
 	}
 
@@ -50,7 +54,7 @@ func (v venda) ByProduct(ID uint) ([]models.Venda, error) {
 	var peca models.Peca
 	peca.ID = ID
 	var vendas []models.Venda
-	if err := v.db.Where(peca).Find(&vendas).Error; err != nil {
+	if err := v.db.Preload("Cliente").Preload("Peca").Where("Peca=?", peca.ID).Find(&vendas).Error; err != nil {
 		return nil, err
 	}
 
@@ -61,6 +65,15 @@ func (v venda) ByProduct(ID uint) ([]models.Venda, error) {
 func (v venda) Delete(ID uint) error {
 	var venda models.Venda
 	venda.ID = ID
+
+	err := v.db.Find(&venda).Error
+	if err != nil {
+		return err
+	}
+
+	if err := v.db.Model(&models.Peca{}).Raw("update peca set saldo=saldo+? where id=?", venda.Quantidade, venda.Peca.ID).Error; err != nil {
+		return err
+	}
 	return v.db.Where("id = ?", venda.ID).Delete(venda).Error
 
 }

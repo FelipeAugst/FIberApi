@@ -10,11 +10,13 @@ import (
 var (
 	DbName string
 	DbPass string
+	PORT   string
 )
 
 func SetEnvVars() {
 	DbName = os.Getenv("DB_NAME")
 	DbPass = os.Getenv("DbPass")
+	PORT = os.Getenv("PORT")
 
 }
 

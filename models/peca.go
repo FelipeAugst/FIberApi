@@ -12,9 +12,9 @@ type Peca struct {
 	gorm.Model
 	Cod       string  `json:"cod" gorm:"column:cod;type=int;unique"`
 	Descricao string  `json:"descricao" gorm:"column:descricao"`
-	Preco     float64 `json:"preco" gorm:"column:preco"`
-	Custo     float64 `json:"custo" gorm:"column:custo"`
-	Saldo     float64 `json:"saldo" gorm:"column:saldo"`
+	Preco     float64 `json:"preco,omitempty" gorm:"column:preco"`
+	Custo     float64 `json:"custo,omitempty" gorm:"column:custo"`
+	Saldo     uint    `json:"saldo,omitempty" gorm:"column:saldo"`
 }
 
 func (p Peca) TableName() string {
