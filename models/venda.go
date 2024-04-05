@@ -4,8 +4,8 @@ import "gorm.io/gorm"
 
 type Venda struct {
 	gorm.Model
-	Peca       `gorm:"foreignKey:peca.id"`
-	Cliente    `gorm:"foreignKey:cliente.id"`
+	Cliente
+	Peca
 	PecaID     uint
 	ClienteID  uint
 	Quantidade uint `json:"quantidade" gorm:"column:quantidade"`

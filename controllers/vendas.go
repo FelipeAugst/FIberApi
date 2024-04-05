@@ -3,7 +3,6 @@ package controllers
 import (
 	"api/models"
 	"api/repository"
-	"fmt"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -55,7 +54,7 @@ func CreateVenda(c *fiber.Ctx) error {
 		Peca:       peca,
 		Quantidade: q["quantidade"],
 	}
-	fmt.Println(venda.Peca.Saldo, venda.Quantidade)
+
 	rv, err := repository.NewVendaRepo()
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
