@@ -4,23 +4,23 @@ import (
 	"api/config"
 	"api/migrations"
 	"api/router"
-	"fmt"
 	"log"
 
 	"github.com/gofiber/fiber/v2"
 )
 
 func main() {
+	config.LoadEnvVArs()
+	if err := migrations.MigrateTables(); err != nil {
+		log.Fatal(err)
+	}
 
 	app := fiber.New(fiber.Config{
 
 		EnablePrintRoutes: true,
 	})
-	config.LoadEnvVArs()
+
 	router.ConfigRoutes(app)
-	fmt.Println(config.DbName)
-	if err := migrations.MigrateTables(); err != nil {
-		log.Fatal(err)
-	}
-	log.Fatal(app.Listen(":5000"))
+
+	log.Fatal(app.Listen(config.PORT))
 }

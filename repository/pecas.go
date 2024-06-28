@@ -60,7 +60,7 @@ func (p *peca) ById(id uint) (models.Peca, error) {
 
 func (p *peca) Update(peca models.Peca) error {
 
-	return p.db.Where("id=?", peca.ID).Updates(peca).Error
+	return p.db.Updates(peca).Error
 }
 
 func (p *peca) Delete(peca models.Peca) error {
