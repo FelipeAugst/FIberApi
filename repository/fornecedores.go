@@ -7,11 +7,20 @@ import (
 	"gorm.io/gorm"
 )
 
+type FornecedorRepo[T any] interface {
+	Create(T) error
+	ListAll() ([]T, error)
+	List(param string) ([]T, error)
+	Update(T) error
+	Delete(T) error
+	ById(uint) (T, error)
+}
+
 type fornecedor struct {
 	db *gorm.DB
 }
 
-func NewFornecedorRepo() (repository[models.Fornecedor], error) {
+func NewFornecedorRepo() (FornecedorRepo[models.Fornecedor], error) {
 	db, err := db.Connect()
 	if err != nil {
 		return nil, err

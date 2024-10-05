@@ -7,11 +7,20 @@ import (
 	"gorm.io/gorm"
 )
 
+type ClienteRepository[T any] interface {
+	Create(T) error
+	ListAll() ([]T, error)
+	List(param string) ([]T, error)
+	Update(T) error
+	Delete(T) error
+	ById(uint) (T, error)
+}
+
 type cliente struct {
 	db *gorm.DB
 }
 
-func NewClienteRepo() (repository[models.Cliente], error) {
+func NewClienteRepo() (ClienteRepository[models.Cliente], error) {
 	db, err := db.Connect()
 	if err != nil {
 		return nil, err

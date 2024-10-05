@@ -7,11 +7,20 @@ import (
 	"gorm.io/gorm"
 )
 
+type VendaRepo[T any] interface {
+	Create(T) error
+	ListAll() ([]T, error)
+	Update(uint) error
+	Delete(uint) error
+	ByAgent(uint) ([]T, error)
+	ByProduct(uint) ([]T, error)
+}
+
 type venda struct {
 	db *gorm.DB
 }
 
-func NewVendaRepo() (operation[models.Venda], error) {
+func NewVendaRepo() (VendaRepo[models.Venda], error) {
 	db, err := db.Connect()
 	if err != nil {
 		return nil, err

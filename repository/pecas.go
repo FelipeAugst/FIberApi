@@ -7,6 +7,15 @@ import (
 	"gorm.io/gorm"
 )
 
+type PecaRepo[T any] interface {
+	Create(T) error
+	ListAll() ([]T, error)
+	List(param string) ([]T, error)
+	Update(T) error
+	Delete(T) error
+	ById(uint) (T, error)
+}
+
 type peca struct {
 	db *gorm.DB
 }
@@ -14,7 +23,7 @@ type peca struct {
 func (p peca) TableName() string {
 	return "peca"
 }
-func NewPecaRepo() (repository[models.Peca], error) {
+func NewPecaRepo() (PecaRepo[models.Peca], error) {
 	db, err := db.Connect()
 	if err != nil {
 		return nil, err
