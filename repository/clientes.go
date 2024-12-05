@@ -9,11 +9,10 @@ import (
 
 type ClienteRepository[T any] interface {
 	Create(T) error
-	ListAll() ([]T, error)
-	List(param string) ([]T, error)
+	GetAll() ([]T, error)
+	Get(id uint) (T, error)
 	Update(T) error
 	Delete(T) error
-	ById(uint) (T, error)
 }
 
 type cliente struct {
@@ -35,7 +34,7 @@ func (c *cliente) Create(cliente models.Cliente) error {
 
 }
 
-func (c *cliente) ListAll() ([]models.Cliente, error) {
+func (c *cliente) GetAll() ([]models.Cliente, error) {
 	var cliente []models.Cliente
 	err := c.db.Find(&cliente).Error
 	if err != nil {
@@ -45,22 +44,14 @@ func (c *cliente) ListAll() ([]models.Cliente, error) {
 
 }
 
-func (c *cliente) ById(id uint) (models.Cliente, error) {
+func (c *cliente) Get(id uint) (models.Cliente, error) {
+	var SearchedClient models.Cliente
+	SearchedClient.ID = id
 
-	var cliente models.Cliente
-	if err := c.db.Where("ID = ?", id).Find(&cliente).Error; err != nil {
+	if err := c.db.Find(&SearchedClient).Error; err != nil {
 		return models.Cliente{}, err
 	}
-
-	return cliente, nil
-}
-
-func (c *cliente) List(param string) ([]models.Cliente, error) {
-	var cliente []models.Cliente
-	if err := c.db.Where("nome like ?", "%"+param).Find(&cliente).Error; err != nil {
-		return nil, err
-	}
-	return cliente, nil
+	return SearchedClient, nil
 }
 
 func (c *cliente) Update(cliente models.Cliente) error {

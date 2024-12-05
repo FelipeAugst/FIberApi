@@ -16,6 +16,7 @@ type Cliente struct {
 	Email    string `json:"email" gorm:"column:email;type:varchar(50);"`
 	CPF      string `json:"cpf" gorm:"column:cpf;type:text;"`
 	Telefone string `json:"telefone" gorm:"column:telefone;type:text;"`
+	Vendas   []Venda
 }
 
 func (c Cliente) TableName() string {
@@ -47,13 +48,13 @@ func (c *Cliente) validate() error {
 	case c.Endereco == "":
 		{
 			{
-				return errors.New("insira um Email Valido")
+				return errors.New("insira um Endereco Valido")
 			}
 		}
 	case c.Telefone == "":
 		{
 			{
-				return errors.New("insira um Email Valido")
+				return errors.New("insira um Telefone Valido")
 			}
 		}
 	default:

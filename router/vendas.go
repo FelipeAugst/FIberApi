@@ -11,10 +11,10 @@ var routeVendas = []Route{
 	{
 		path:    "/vendas",
 		method:  http.MethodGet,
-		handler: controllers.ListVendas,
+		handler: nil,
 	},
 	{
-		path:    "/vendas/:cliente/:peca",
+		path:    "/vendas/",
 		method:  http.MethodPost,
 		handler: controllers.CreateVenda,
 	},
@@ -52,6 +52,6 @@ var routeVendas = []Route{
 	{
 		path:    "/vendas",
 		method:  http.MethodDelete,
-		handler: controllers.DeleteVendas,
+		handler: nil,
 	},
 }

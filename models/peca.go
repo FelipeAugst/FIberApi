@@ -2,7 +2,6 @@ package models
 
 import (
 	"errors"
-	"regexp"
 	"strings"
 
 	"gorm.io/gorm"
@@ -10,7 +9,6 @@ import (
 
 type Peca struct {
 	gorm.Model
-	Cod       string  `json:"cod" gorm:"column:cod;type=int;unique"`
 	Descricao string  `json:"descricao" gorm:"column:descricao"`
 	Preco     float64 `json:"preco,omitempty" gorm:"column:preco"`
 	Custo     float64 `json:"custo,omitempty" gorm:"column:custo"`
@@ -33,17 +31,11 @@ func (p Peca) validate() error {
 	if p.Descricao == "" {
 		return errors.New("descricao invalida")
 	}
-	exp, err := regexp.Compile("([0-9][0-9][.][0-9][0-9][.][0-9][0-9][0-9][0-9])")
-	if err != nil {
-		return err
-	}
-	if len(p.Cod) > 10 || len(strings.Split(p.Cod, ".")) > 3 || !exp.Match([]byte(p.Cod)) {
-		return errors.New("padrao invalido para o codigo da peca")
-	}
+
 	return nil
 }
 
 type PecaVendida struct {
 	Peca
-	quantidade uint
+	Quantidade uint
 }
