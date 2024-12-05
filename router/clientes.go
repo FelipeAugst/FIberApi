@@ -12,20 +12,16 @@ var routeClientes = []Route{
 		handler: controllers.CreateCliente,
 	},
 	{
-		path:    "/clientes/nome/:filter",
+		path:    "/clientes/:id",
 		method:  http.MethodGet,
-		handler: controllers.ListClientes,
+		handler: controllers.GetCliente,
 	},
 	{
 		path:    "/clientes",
 		method:  http.MethodGet,
-		handler: controllers.ListAllClientes,
+		handler: controllers.GetAllCliente,
 	},
-	{
-		path:    "/clientes/:id",
-		method:  http.MethodGet,
-		handler: controllers.ByIdCliente,
-	},
+
 	{
 		path:    "/clientes/:id",
 		method:  http.MethodPut,

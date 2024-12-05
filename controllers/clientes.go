@@ -29,7 +29,7 @@ func CreateCliente(c *fiber.Ctx) error {
 	return c.JSON(cliente)
 }
 
-func ListAllClientes(c *fiber.Ctx) error {
+func GetAllCliente(c *fiber.Ctx) error {
 	var clientes []models.Cliente
 	r, err := repository.NewClienteRepo()
 	if err != nil {
@@ -44,45 +44,22 @@ func ListAllClientes(c *fiber.Ctx) error {
 
 }
 
-func ListClientes(c *fiber.Ctx) error {
+func GetCliente(c *fiber.Ctx) error {
 
 	id, err := c.ParamsInt("id")
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": err.Error()})
 	}
 
-	var clientes []models.Cliente
+	var cliente models.Cliente
 	r, err := repository.NewClienteRepo()
 	if err != nil {
 		c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
 	}
 
-	clientes, err = r.Get(uint(id))
+	cliente, err = r.Get(uint(id))
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
-	}
-	return c.JSON(clientes)
-
-}
-
-func ByIdCliente(c *fiber.Ctx) error {
-
-	id, err := c.ParamsInt("id")
-	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"Error": err.Error()})
-
-	}
-
-	r, err := repository.NewClienteRepo()
-	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"Error": err.Error()})
-	}
-
-	cliente, err := r.ById(uint(id))
-	if err != nil {
-
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"Error": err.Error()})
-
 	}
 	return c.JSON(cliente)
 
