@@ -34,8 +34,3 @@ func (p Peca) validate() error {
 
 	return nil
 }
-
-type PecaVendida struct {
-	Peca
-	Quantidade uint
-}

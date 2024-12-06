@@ -16,7 +16,6 @@ type Cliente struct {
 	Email    string `json:"email" gorm:"column:email;type:varchar(50);"`
 	CPF      string `json:"cpf" gorm:"column:cpf;type:text;"`
 	Telefone string `json:"telefone" gorm:"column:telefone;type:text;"`
-	Vendas   []Venda
 }
 
 func (c Cliente) TableName() string {

@@ -12,7 +12,7 @@ var routePecas = []Route{
 	},
 	{path: "/pecas/descricao/:id",
 		method:  http.MethodGet,
-		handler: controllers.ListPecas,
+		handler: controllers.FindPeca,
 	},
 	{path: "/pecas",
 		method:  http.MethodPost,
