@@ -4,6 +4,7 @@ import (
 	"api/models"
 	"api/repository"
 	"errors"
+	"strconv"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -66,21 +67,34 @@ func ListAllPecas(c *fiber.Ctx) error {
 
 }
 
-func ListPecas(c *fiber.Ctx) error {
+func SearchPecas(c *fiber.Ctx) error {
 	param := c.Params("filter")
 	if len(param) < 3 {
 		c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": errors.New("insira ao menos 3 letras na busca").Error()})
 	}
+	_, err := repository.NewPecaRepo()
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"Error": err.Error()})
+	}
+	return nil
+}
+
+func FindPeca(c *fiber.Ctx) error {
+	id, err := strconv.ParseUint(c.Params("id"))
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"Error": err.Error()})
+	}
+
 	r, err := repository.NewPecaRepo()
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"Error": err.Error()})
 	}
-	pecas, err := r.List(param)
+	peca, err := r.Find(uint(id))
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"Error": err.Error()})
-	}
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"Error": err.Error()})
 
-	return c.Status(200).JSON(pecas)
+	}
+	return c.JSON(peca)
 }
 
 func EditPeca(c *fiber.Ctx) error {

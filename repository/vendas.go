@@ -9,11 +9,10 @@ import (
 
 type VendaRepo[T any] interface {
 	Create(T) error
+	Find(uint) (T, error)
 	ListAll() ([]T, error)
-	Update(uint) error
-	Delete(uint) error
-	ByAgent(uint) ([]T, error)
-	ByProduct(uint) ([]T, error)
+	Update(T) error
+	Delete(T) error
 }
 
 type venda struct {
@@ -28,68 +27,34 @@ func NewVendaRepo() (VendaRepo[models.Venda], error) {
 	return &venda{db.Model(&models.Venda{})}, nil
 }
 
-func (v venda) Create(venda models.Venda) error {
-	venda.Peca.Saldo -= venda.Quantidade
-	if err := v.db.Model(&models.Peca{}).Raw("update peca set saldo=? where id=?", venda.Peca.Saldo, venda.Peca.ID).Error; err != nil {
-		return err
-	}
-	return v.db.Preload("Cliente").Preload("Peca").Create(&venda).Error
+func (v *venda) Create(m models.Venda) error {
+	return v.db.Create(m).Error
 
 }
 
-func (v venda) ListAll() ([]models.Venda, error) {
+func (v *venda) Find(id uint) (models.Venda, error) {
+	var search models.Venda
+	if err := v.db.Find(&search, "id=?", id).Error; err != nil {
+		return models.Venda{}, err
+	}
+	return search, nil
+}
+
+func (v *venda) ListAll() ([]models.Venda, error) {
 	var vendas []models.Venda
-	if err := v.db.Model(&models.Venda{}).Preload("Cliente").Preload("Peca").Find(&vendas).Error; err != nil {
+	if err := v.db.Find(vendas).Error; err != nil {
 		return nil, err
 	}
-
 	return vendas, nil
 
 }
 
-func (v venda) ByAgent(ID uint) ([]models.Venda, error) {
-	var cliente models.Cliente
-	cliente.ID = ID
-	var vendas []models.Venda
-	if err := v.db.Preload("Cliente").Preload("Peca").Where("Clliente=?", cliente.ID).Find(&vendas).Error; err != nil {
-		return nil, err
-	}
-
-	return vendas, nil
+func (v *venda) Update(updated models.Venda) error {
+	return v.db.Where("id=?", updated.ID).Updates(updated).Error
 
 }
 
-func (v venda) ByProduct(ID uint) ([]models.Venda, error) {
-	var peca models.Peca
-	peca.ID = ID
-	var vendas []models.Venda
-	if err := v.db.Preload("Cliente").Preload("Peca").Where("Peca=?", peca.ID).Find(&vendas).Error; err != nil {
-		return nil, err
-	}
-
-	return vendas, nil
-
-}
-
-func (v venda) Delete(ID uint) error {
-	var venda models.Venda
-	venda.ID = ID
-
-	err := v.db.Find(&venda).Error
-	if err != nil {
-		return err
-	}
-
-	if err := v.db.Model(&models.Peca{}).Raw("update peca set saldo=saldo+? where id=?", venda.Quantidade, venda.Peca.ID).Error; err != nil {
-		return err
-	}
-	return v.db.Where("id = ?", venda.ID).Delete(venda).Error
-
-}
-
-func (v venda) Update(ID uint) error {
-	var venda models.Venda
-	venda.ID = ID
-	return v.db.Where("id = ?", venda.ID).Updates(venda).Error
+func (v *venda) Delete(deleted models.Venda) error {
+	return v.db.Delete(&deleted).Error
 
 }
