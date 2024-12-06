@@ -57,7 +57,7 @@ func SearchPecas(c *fiber.Ctx) error {
 }
 
 func FindPeca(c *fiber.Ctx) error {
-	id, err := strconv.ParseUint(c.Params("id"))
+	id, err := strconv.ParseUint(c.Params("id"), 10, 64)
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"Error": err.Error()})
 	}
