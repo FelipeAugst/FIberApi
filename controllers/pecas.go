@@ -29,29 +29,6 @@ func CreatePeca(c *fiber.Ctx) error {
 
 }
 
-func ByIdPeca(c *fiber.Ctx) error {
-
-	id, err := c.ParamsInt("id")
-	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"Error": err.Error()})
-
-	}
-
-	r, err := repository.NewPecaRepo()
-	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"Error": err.Error()})
-	}
-
-	peca, err := r.ById(uint(id))
-	if err != nil {
-
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"Error": err.Error()})
-
-	}
-	return c.JSON(peca)
-
-}
-
 func ListAllPecas(c *fiber.Ctx) error {
 	r, err := repository.NewPecaRepo()
 	if err != nil {
