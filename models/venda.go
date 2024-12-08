@@ -4,21 +4,23 @@ import (
 	"gorm.io/gorm"
 )
 
+type ItemVenda struct {
+	gorm.Model
+	PecaID     uint
+	Peca       Peca `json:"pecas" gorm:"foreignKey:PecaID"`
+	Quantidade int  `json:"quantidade"`
+	VendaID    uint
+	Venda      Venda `gorm:"foreignKey:VendaID"`
+}
+
+func (i ItemVenda) TableName() string {
+	return "Item"
+
+}
+
 type Venda struct {
 	gorm.Model
-	Peca            Peca    `json:"pecas"`
-	Cliente         Cliente `json:"cliente"`
-	PecaID          uint
-	ClienteID       uint
-	PedidoDeVendaID uint
-}
-
-func (v Venda) TableName() string {
-	return "venda"
-
-}
-
-type PedidoDeVenda struct {
-	gorm.Model
-	Vendas []Venda `json:"vendas"`
+	ClienteID uint
+	Cliente   Cliente     `gorm:"foreignKey:ClienteID"`
+	Itens     []ItemVenda `json:"itens"`
 }

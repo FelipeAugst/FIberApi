@@ -10,6 +10,6 @@ func MigrateTables() error {
 	if err != nil {
 		return err
 	}
-	return db.AutoMigrate(&models.Peca{}, &models.Cliente{}, &models.Fornecedor{}, &models.Venda{}, &models.PedidoDeVenda{})
+	return db.AutoMigrate(&models.Peca{}, &models.Cliente{}, &models.Fornecedor{}, &models.Venda{}, &models.ItemVenda{})
 
 }
