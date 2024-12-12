@@ -45,7 +45,7 @@ func ListAllFornecedores(c *fiber.Ctx) error {
 
 }
 
-func ListFornecedores(c *fiber.Ctx) error {
+func SearchFornecedores(c *fiber.Ctx) error {
 	param := c.Params("filter")
 	if len(param) < 3 {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": errors.New("insira ao menos 3 letras na busca").Error()})
@@ -54,7 +54,7 @@ func ListFornecedores(c *fiber.Ctx) error {
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
 	}
-	fornecedores, err := r.List(param)
+	fornecedores, err := r.Search(param)
 
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
@@ -63,7 +63,7 @@ func ListFornecedores(c *fiber.Ctx) error {
 	return c.JSON(fornecedores)
 }
 
-func ByIdFornecedor(c *fiber.Ctx) error {
+func FindFornecedor(c *fiber.Ctx) error {
 
 	id, err := c.ParamsInt("id")
 	if err != nil {
@@ -76,7 +76,7 @@ func ByIdFornecedor(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"Error": err.Error()})
 	}
 
-	fornecedor, err := r.ById(uint(id))
+	fornecedor, err := r.Find(uint(id))
 	if err != nil {
 
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"Error": err.Error()})

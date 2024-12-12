@@ -10,10 +10,10 @@ import (
 type FornecedorRepo[T any] interface {
 	Create(T) error
 	ListAll() ([]T, error)
-	List(param string) ([]T, error)
+	Find(id uint) (T, error)
 	Update(T) error
 	Delete(T) error
-	ById(uint) (T, error)
+	Search(string) ([]models.Fornecedor, error)
 }
 
 type fornecedor struct {
@@ -34,7 +34,7 @@ func (f *fornecedor) Create(fornecedor models.Fornecedor) error {
 
 }
 
-func (f *fornecedor) ById(id uint) (models.Fornecedor, error) {
+func (f *fornecedor) Find(id uint) (models.Fornecedor, error) {
 
 	var fornecedor models.Fornecedor
 	if err := f.db.Where("ID = ?", id).Find(&fornecedor).Error; err != nil {
@@ -54,7 +54,7 @@ func (f *fornecedor) ListAll() ([]models.Fornecedor, error) {
 	return fornecedores, nil
 }
 
-func (f *fornecedor) List(filter string) ([]models.Fornecedor, error) {
+func (f *fornecedor) Search(filter string) ([]models.Fornecedor, error) {
 
 	var fornecedores []models.Fornecedor
 	if err := f.db.Where("nome like ?", filter+"%").Find(&fornecedores).Error; err != nil {

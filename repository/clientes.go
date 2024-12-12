@@ -9,8 +9,8 @@ import (
 
 type ClienteRepository[T any] interface {
 	Create(T) error
-	GetAll() ([]T, error)
-	Get(id uint) (T, error)
+	ListAll() ([]T, error)
+	Find(id uint) (T, error)
 	Update(T) error
 	Delete(T) error
 }
@@ -34,7 +34,7 @@ func (c *cliente) Create(cliente models.Cliente) error {
 
 }
 
-func (c *cliente) GetAll() ([]models.Cliente, error) {
+func (c *cliente) ListAll() ([]models.Cliente, error) {
 	var cliente []models.Cliente
 	err := c.db.Find(&cliente).Error
 	if err != nil {
@@ -44,7 +44,7 @@ func (c *cliente) GetAll() ([]models.Cliente, error) {
 
 }
 
-func (c *cliente) Get(id uint) (models.Cliente, error) {
+func (c *cliente) Find(id uint) (models.Cliente, error) {
 	var SearchedClient models.Cliente
 	SearchedClient.ID = id
 

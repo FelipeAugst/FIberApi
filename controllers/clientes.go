@@ -36,7 +36,7 @@ func GetAllCliente(c *fiber.Ctx) error {
 		c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
 	}
 
-	clientes, err = r.GetAll()
+	clientes, err = r.ListAll()
 	if err != nil {
 		c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
 	}
@@ -57,7 +57,7 @@ func GetCliente(c *fiber.Ctx) error {
 		c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
 	}
 
-	cliente, err = r.Get(uint(id))
+	cliente, err = r.Find(uint(id))
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
 	}
