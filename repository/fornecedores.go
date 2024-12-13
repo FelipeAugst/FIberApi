@@ -57,7 +57,7 @@ func (f *fornecedor) ListAll() ([]models.Fornecedor, error) {
 func (f *fornecedor) Search(filter string) ([]models.Fornecedor, error) {
 
 	var fornecedores []models.Fornecedor
-	if err := f.db.Where("nome like ?", filter+"%").Find(&fornecedores).Error; err != nil {
+	if err := f.db.Find(&fornecedores, "NOME LIKE ?", filter+"%").Error; err != nil {
 		return nil, err
 	}
 

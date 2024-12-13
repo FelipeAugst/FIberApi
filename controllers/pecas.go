@@ -126,3 +126,22 @@ func DeletePeca(c *fiber.Ctx) error {
 	return c.SendStatus(200)
 
 }
+
+func SaerchPeca(ctx *fiber.Ctx) error {
+	filter := ctx.Query("query")
+	if len(filter) < 4 {
+		return ctx.Status(fiber.StatusBadRequest).JSON((fiber.Map{"Error": "Insira ao menos 4 letras na pesquisa"}))
+
+	}
+	repo, err := repository.NewPecaRepo()
+	if err != nil {
+		return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"Error": err.Error()})
+	}
+
+	results, err := repo.Search(filter)
+	if err != nil {
+		return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"Error": err.Error()})
+	}
+
+	return ctx.JSON(results)
+}

@@ -10,7 +10,7 @@ var routeFornecedores = []Route{
 		method:  http.MethodGet,
 		handler: controllers.ListAllFornecedores,
 	},
-	{path: "/fornecedores/search/:filter",
+	{path: "/fornecedores/search/",
 		method:  http.MethodGet,
 		handler: controllers.SearchFornecedores,
 	},

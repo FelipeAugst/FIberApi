@@ -27,4 +27,7 @@ var routePecas = []Route{
 		method:  http.MethodDelete,
 		handler: controllers.DeletePeca,
 	},
+	{path: "/pecas/search",
+		method:  http.MethodGet,
+		handler: controllers.SaerchPeca},
 }

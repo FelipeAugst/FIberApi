@@ -13,6 +13,7 @@ type PecaRepo[T any] interface {
 	ListAll() ([]T, error)
 	Update(T) error
 	Delete(T) error
+	Search(string) ([]T, error)
 }
 
 type peca struct {
@@ -60,5 +61,16 @@ func (p *peca) Update(peca models.Peca) error {
 
 func (p *peca) Delete(peca models.Peca) error {
 	return p.db.Delete(&peca).Error
+
+}
+
+func (p *peca) Search(filter string) ([]models.Peca, error) {
+
+	var results []models.Peca
+
+	if err := p.db.Find(&results, "DESCRICAO LIKE ?", filter+"%").Error; err != nil {
+		return nil, err
+	}
+	return results, nil
 
 }

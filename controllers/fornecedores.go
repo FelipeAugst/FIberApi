@@ -46,9 +46,9 @@ func ListAllFornecedores(c *fiber.Ctx) error {
 }
 
 func SearchFornecedores(c *fiber.Ctx) error {
-	param := c.Params("filter")
-	if len(param) < 3 {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": errors.New("insira ao menos 3 letras na busca").Error()})
+	param := c.Query("query")
+	if len(param) < 4 {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": errors.New("insira ao menos 4 letras na busca").Error()})
 	}
 	r, err := repository.NewFornecedorRepo()
 	if err != nil {
