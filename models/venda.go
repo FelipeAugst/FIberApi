@@ -9,4 +9,5 @@ type Venda struct {
 	ClienteID uint
 	Cliente   Cliente     `gorm:"foreignKey:ClienteID"`
 	Itens     []ItemVenda `json:"itens"`
+	Concluida bool        `json:"concluida"`
 }
