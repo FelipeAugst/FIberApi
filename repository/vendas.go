@@ -13,6 +13,7 @@ type VendaRepo[T any] interface {
 	ListAll() ([]T, error)
 	Update(T) error
 	Delete(T) error
+	Conclude(id uint) error
 }
 
 type venda struct {
@@ -28,6 +29,7 @@ func NewVendaRepo() (VendaRepo[models.Venda], error) {
 }
 
 func (v *venda) Create(m models.Venda) error {
+	m.Concluida = false
 	return v.db.Create(m).Error
 
 }
@@ -56,5 +58,11 @@ func (v *venda) Update(updated models.Venda) error {
 
 func (v *venda) Delete(deleted models.Venda) error {
 	return v.db.Delete(&deleted).Error
+
+}
+
+func (v *venda) Conclude(id uint) error {
+
+	return v.db.Where("ID = ?", id).UpdateColumn("Concluida", true).Error
 
 }

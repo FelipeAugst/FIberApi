@@ -25,3 +25,21 @@ func CreateVenda(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusCreated).JSON(venda)
 
 }
+
+func Conclude(c *fiber.Ctx) error {
+	id, err := c.ParamsInt("id")
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"erro": err.Error()})
+	}
+
+	repo, err := repository.NewVendaRepo()
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"erro": err.Error()})
+	}
+
+	if err := repo.Conclude(uint(id)); err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"erro": err.Error()})
+
+	}
+	return c.SendStatus(fiber.StatusCreated)
+}
