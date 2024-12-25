@@ -3,6 +3,7 @@ all: build
 build:
 	touch db/estoque.db
 	go build -o api
+	./api
 
 
 clear:
