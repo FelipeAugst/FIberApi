@@ -7,7 +7,7 @@ import (
 
 var routeClientes = []Route{
 	{
-		path:    "/clientes",
+		path:    "/clientes/create",
 		method:  http.MethodPost,
 		handler: controllers.CreateCliente,
 	},

@@ -30,13 +30,14 @@ func NewVendaRepo() (VendaRepo[models.Venda], error) {
 
 func (v *venda) Create(m models.Venda) error {
 	m.Concluida = false
-	return v.db.Create(m).Error
+	return v.db.Create(&m).Error
 
 }
 
 func (v *venda) Find(id uint) (models.Venda, error) {
 	var search models.Venda
-	if err := v.db.Preload("ItemVenda").Find(&search, "id=?", id).Error; err != nil {
+
+	if err := v.db.Preload("Clientes").Preload("Itemvenda").Find(search, "id=?", id).Error; err != nil {
 		return models.Venda{}, err
 	}
 	return search, nil
@@ -44,7 +45,7 @@ func (v *venda) Find(id uint) (models.Venda, error) {
 
 func (v *venda) ListAll() ([]models.Venda, error) {
 	var vendas []models.Venda
-	if err := v.db.Preload("ItemVenda").Find(vendas).Error; err != nil {
+	if err := v.db.Preload("Clientes", "clientes.id=vendas.clienteid").Find(&vendas).Error; err != nil {
 		return nil, err
 	}
 	return vendas, nil

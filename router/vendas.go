@@ -3,55 +3,40 @@ package router
 import (
 	"api/controllers"
 	"net/http"
-
-	"github.com/gofiber/fiber/v2"
 )
 
 var routeVendas = []Route{
 	{
 		path:    "/vendas",
 		method:  http.MethodGet,
-		handler: nil,
+		handler: controllers.ListAllVendas,
 	},
 	{
-		path:    "/vendas/",
+		path:    "/vendas/create",
 		method:  http.MethodPost,
 		handler: controllers.CreateVenda,
 	},
 
 	{
-		path:   "/vendas/:id",
-		method: http.MethodPost,
-		handler: func(*fiber.Ctx) error {
-			return nil
-		},
+		path:    "/vendas/:id/update",
+		method:  http.MethodPut,
+		handler: controllers.UpdateVenda,
 	},
 
 	{
-		path:   "/vendas/peca/:filter",
-		method: http.MethodGet,
-		handler: func(*fiber.Ctx) error {
-			return nil
-		},
-	},
-	{
-		path:   "/vendas/fornecedor/:filter",
-		method: http.MethodGet,
-		handler: func(*fiber.Ctx) error {
-			return nil
-		},
-	},
-	{
-		path:   "/vendas",
-		method: http.MethodPut,
-		handler: func(*fiber.Ctx) error {
-			return nil
-		},
+		path:    "/vendas/:id",
+		method:  http.MethodGet,
+		handler: controllers.FindVenda,
 	},
 
 	{
-		path:    "/vendas",
+		path:    "/vendas/:id/delete",
 		method:  http.MethodDelete,
-		handler: nil,
+		handler: controllers.DeleteVenda,
+	},
+	{
+		path:    "/vendas/:id/conclude",
+		method:  http.MethodDelete,
+		handler: controllers.ConcludeVenda,
 	},
 }
