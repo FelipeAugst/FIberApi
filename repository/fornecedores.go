@@ -1,10 +1,10 @@
 package repository
 
 import (
+	"gorm.io/gorm"
+
 	"api/db"
 	"api/models"
-
-	"gorm.io/gorm"
 )
 
 type FornecedorRepo[T any] interface {
@@ -16,26 +16,23 @@ type FornecedorRepo[T any] interface {
 	Search(string) ([]models.Fornecedor, error)
 }
 
-type fornecedor struct {
+type Fornecedor struct {
 	db *gorm.DB
 }
 
-func NewFornecedorRepo() (FornecedorRepo[models.Fornecedor], error) {
+func NewFornecedorRepo() (Fornecedor, error) {
 	db, err := db.Connect()
 	if err != nil {
-		return nil, err
+		return Fornecedor{}, err
 	}
-	return &fornecedor{db.Model(&models.Fornecedor{})}, nil
+	return Fornecedor{db.Model(&models.Fornecedor{})}, nil
 }
 
-func (f *fornecedor) Create(fornecedor models.Fornecedor) error {
-
+func (f *Fornecedor) Create(fornecedor models.Fornecedor) error {
 	return f.db.Create(&fornecedor).Error
-
 }
 
-func (f *fornecedor) Find(id uint) (models.Fornecedor, error) {
-
+func (f *Fornecedor) Find(id uint) (models.Fornecedor, error) {
 	var fornecedor models.Fornecedor
 	if err := f.db.Where("ID = ?", id).Find(&fornecedor).Error; err != nil {
 		return models.Fornecedor{}, err
@@ -44,8 +41,7 @@ func (f *fornecedor) Find(id uint) (models.Fornecedor, error) {
 	return fornecedor, nil
 }
 
-func (f *fornecedor) ListAll() ([]models.Fornecedor, error) {
-
+func (f *Fornecedor) ListAll() ([]models.Fornecedor, error) {
 	var fornecedores []models.Fornecedor
 	if err := f.db.Find(&fornecedores).Error; err != nil {
 		return nil, err
@@ -54,8 +50,7 @@ func (f *fornecedor) ListAll() ([]models.Fornecedor, error) {
 	return fornecedores, nil
 }
 
-func (f *fornecedor) Search(filter string) ([]models.Fornecedor, error) {
-
+func (f *Fornecedor) Search(filter string) ([]models.Fornecedor, error) {
 	var fornecedores []models.Fornecedor
 	if err := f.db.Find(&fornecedores, "NOME LIKE ?", filter+"%").Error; err != nil {
 		return nil, err
@@ -64,12 +59,10 @@ func (f *fornecedor) Search(filter string) ([]models.Fornecedor, error) {
 	return fornecedores, nil
 }
 
-func (f *fornecedor) Update(fornecedor models.Fornecedor) error {
-
+func (f *Fornecedor) Update(fornecedor models.Fornecedor) error {
 	return f.db.Where("id=?", fornecedor.ID).Updates(fornecedor).Error
 }
 
-func (f *fornecedor) Delete(fornecedor models.Fornecedor) error {
+func (f *Fornecedor) Delete(fornecedor models.Fornecedor) error {
 	return f.db.Delete(&fornecedor).Error
-
 }
