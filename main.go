@@ -2,7 +2,9 @@ package main
 
 import (
 	"api/config"
+	"api/controllers"
 	"api/migrations"
+	"api/repository"
 	"api/router"
 	"log"
 	"os"
@@ -25,11 +27,18 @@ func main() {
 	}
 
 	app := fiber.New(fiber.Config{
-
 		EnablePrintRoutes: true,
 	})
+
+	fornecedorRepo, err := repository.NewFornecedorRepo()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fornecedorController := controllers.NewFornecedor(&fornecedorRepo)
+
 	go func() {
-		router.ConfigRoutes(app)
+		router.ConfigRoutes(app, fornecedorController)
 		app.Listen(config.PORT)
 	}()
 	<-shutdown
